@@ -317,8 +317,14 @@ public class MainTabsActivity extends ViewPagerActivity implements NotificationC
 
         tabsView = new MainTabsLayout(context, resourceProvider);
         tabsView.setClipChildren(false);
-        tabsView.setPadding(dp(DialogsActivity.MAIN_TABS_MARGIN + 4), dp(DialogsActivity.MAIN_TABS_MARGIN + 4), dp(DialogsActivity.MAIN_TABS_MARGIN + 4), dp(DialogsActivity.MAIN_TABS_MARGIN + 4));
-        tabsView.setMaxWidth(dp(328 + DialogsActivity.MAIN_TABS_MARGIN * 2));
+        if (BuildVars.WAYGRAM_SIMPLIFIED_UI) {
+            // WayGram: a wider, flatter bottom navigation with four clear destinations.
+            tabsView.setPadding(dp(8), dp(4), dp(8), dp(4));
+            tabsView.setMaxWidth(Integer.MAX_VALUE);
+        } else {
+            tabsView.setPadding(dp(DialogsActivity.MAIN_TABS_MARGIN + 4), dp(DialogsActivity.MAIN_TABS_MARGIN + 4), dp(DialogsActivity.MAIN_TABS_MARGIN + 4), dp(DialogsActivity.MAIN_TABS_MARGIN + 4));
+            tabsView.setMaxWidth(dp(328 + DialogsActivity.MAIN_TABS_MARGIN * 2));
+        }
 
         tabs = new GlassTabView[5];
         tabs[INDEX_CHATS] = GlassTabView.createMainTab(context, resourceProvider, GlassTabView.TabAnimation.CHATS, R.string.MainTabsChats);
@@ -382,8 +388,8 @@ public class MainTabsActivity extends ViewPagerActivity implements NotificationC
         iBlur3FactoryGlass.setLiquidGlassEffectAllowed(LiteMode.isEnabled(LiteMode.FLAG_LIQUID_GLASS));
 
         tabsViewBackground = iBlur3FactoryGlass.create(tabsView, BlurredBackgroundProviderImpl.mainTabs(resourceProvider));
-        tabsViewBackground.setRadius(dp(DialogsActivity.MAIN_TABS_HEIGHT / 2f));
-        tabsViewBackground.setPadding(dp(DialogsActivity.MAIN_TABS_MARGIN - 0.334f));
+        tabsViewBackground.setRadius(dp(BuildVars.WAYGRAM_SIMPLIFIED_UI ? 12 : DialogsActivity.MAIN_TABS_HEIGHT / 2f));
+        tabsViewBackground.setPadding(dp(BuildVars.WAYGRAM_SIMPLIFIED_UI ? 2 : DialogsActivity.MAIN_TABS_MARGIN - 0.334f));
         tabsView.setBackground(tabsViewBackground);
 
         BlurredBackgroundDrawableViewFactory iBlur3FactoryFade = new BlurredBackgroundDrawableViewFactory(iBlur3SourceColor);
