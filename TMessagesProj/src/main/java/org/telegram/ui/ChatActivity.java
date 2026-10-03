@@ -4257,8 +4257,11 @@ public class ChatActivity extends BaseFragment implements
         if (chatMode == 0 && (threadMessageId == 0 || isTopic) && !UserObject.isReplyUser(currentUser) && !isReport()) {
             TLRPC.UserFull userFull = null;
             if (currentUser != null) {
-                audioCallIconItem = menu.lazilyAddItem(call, R.drawable.call, themeDelegate);
+                audioCallIconItem = menu.lazilyAddItem(call, BuildVars.WAYGRAM_SIMPLIFIED_UI ? R.drawable.msg_calls : R.drawable.call, themeDelegate);
                 audioCallIconItem.setContentDescription(LocaleController.getString(R.string.Call));
+                if (BuildVars.WAYGRAM_SIMPLIFIED_UI) {
+                    audioCallIconItem.setBackground(Theme.createSelectorDrawable(getThemedColor(Theme.key_listSelector), Theme.RIPPLE_MASK_CIRCLE_20DP, dp(18)));
+                }
                 userFull = getMessagesController().getUserFull(currentUser.id);
                 if (userFull != null && userFull.phone_calls_available) {
                     showAudioCallAsIcon = !inPreviewMode;
@@ -4288,6 +4291,10 @@ public class ChatActivity extends BaseFragment implements
             context.getResources().getDrawable(R.drawable.mini_attach).mutate()
         );
         otherIcon.setIconTranslate(-dp(6), dp(6.66f));
+        if (BuildVars.WAYGRAM_SIMPLIFIED_UI) {
+            // WayGram keeps the chat header clean; attachment affordances stay in the composer.
+            otherIcon.setIconVisible(false);
+        }
 
         if (((chatMode == 0 && (threadMessageId == 0 || isTopic)) || chatMode == MODE_SUGGESTIONS) && !UserObject.isReplyUser(currentUser) && !isReport()) {
             TLRPC.UserFull userFull = null;
