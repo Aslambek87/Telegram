@@ -285,7 +285,9 @@ public class MainTabsActivity extends ViewPagerActivity implements NotificationC
         checkContactsTabBadge();
         checkUnreadCount(true);
 
-        showAccountChangeHint();
+        if (!BuildVars.WAYGRAM_SIMPLIFIED_UI) {
+            showAccountChangeHint();
+        }
     }
 
     private void checkContactsTabBadge() {
@@ -342,7 +344,11 @@ public class MainTabsActivity extends ViewPagerActivity implements NotificationC
         tabsView.addTabToIgnoreClick(tabs[INDEX_PROFILE]);
         tabsView.addTabToIgnoreClick(tabs[INDEX_CALLS]);
 
-        for (int index = 0; index < tabs.length; index++) {
+        final int[] tabOrder = BuildVars.WAYGRAM_SIMPLIFIED_UI
+                ? new int[]{INDEX_CHATS, INDEX_CALLS, INDEX_CONTACTS, INDEX_SETTINGS, INDEX_PROFILE}
+                : new int[]{INDEX_CHATS, INDEX_CONTACTS, INDEX_SETTINGS, INDEX_CALLS, INDEX_PROFILE};
+        for (int order = 0; order < tabOrder.length; order++) {
+            final int index = tabOrder[order];
             final GlassTabView view = tabs[index];
 
             final int position = indexToPosition(index);
@@ -771,7 +777,7 @@ public class MainTabsActivity extends ViewPagerActivity implements NotificationC
                 dropFragmentAtPosition(POSITION_CONTACTS_OR_CALLS);
                 dropCallsFragmentAfterPageScroll = false;
             }
-            if (currentPosition != POSITION_SETTINGS) {
+            if (!BuildVars.WAYGRAM_SIMPLIFIED_UI && currentPosition != POSITION_SETTINGS) {
                 dropFragmentAtPosition(POSITION_SETTINGS);
             }
             if (pendingFolderId != null && currentPosition == POSITION_CHATS && dialogsActivity != null) {
@@ -1119,7 +1125,7 @@ public class MainTabsActivity extends ViewPagerActivity implements NotificationC
         }
 
         final float animatedPosition = viewPager.getPositionAnimated();
-        final float isProfile = 1f - MathUtils.clamp(Math.abs(POSITION_SETTINGS - animatedPosition), 0, 1);
+        final float isProfile = BuildVars.WAYGRAM_SIMPLIFIED_UI ? 0f : 1f - MathUtils.clamp(Math.abs(POSITION_SETTINGS - animatedPosition), 0, 1);
         final float hide = 1f - AndroidUtilities.getNavigationBarThirdButtonsFactor(0, 1f, navigationBarHeight);
         float alpha = (1f - isProfile * hide) * animatorTabsVisible.getFloatValue();
         if (tabletLayout) {
