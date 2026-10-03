@@ -7,6 +7,7 @@
     "waygram": {
       "distribution": "internal",
       "android": {
+        "image": "latest",
         "config": "waygram-android.yml",
         "withoutCredentials": true
       }
