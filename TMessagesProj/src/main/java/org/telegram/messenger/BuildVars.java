@@ -24,7 +24,7 @@ public class BuildVars {
     public static boolean USE_CLOUD_STRINGS = true;
     public static boolean CHECK_UPDATES = true;
     // WayGram: keep the Telegram engine while presenting a simpler messenger UI.
-    public static final boolean WAYGRAM_SIMPLIFIED_UI = true;
+    public static final boolean WAYGRAM_SIMPLIFIED_UI = BuildConfig.WAYGRAM_SIMPLIFIED_UI;
     public static boolean NO_SCOPED_STORAGE = Build.VERSION.SDK_INT <= 29;
     public static String BUILD_VERSION_STRING = BuildConfig.BUILD_VERSION_STRING;
 
