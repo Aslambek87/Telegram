@@ -22,6 +22,7 @@ import android.graphics.drawable.NinePatchDrawable;
 import androidx.core.graphics.ColorUtils;
 
 import org.telegram.messenger.AndroidUtilities;
+import org.telegram.messenger.BuildVars;
 import org.telegram.messenger.SharedConfig;
 import org.telegram.ui.Components.MotionBackgroundDrawable;
 import org.telegram.ui.Components.blur3.utils.NinePatchBuilder;
@@ -115,6 +116,10 @@ public class MessageDrawable extends Drawable {
         currentType = type;
         isSelected = selected;
         path = new Path();
+        if (BuildVars.WAYGRAM_SIMPLIFIED_UI && type == TYPE_TEXT) {
+            // WayGram text bubbles use a softer modern radius while preserving Telegram's message engine.
+            overrideRoundRadius = AndroidUtilities.dp(14);
+        }
         selectedPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         alpha = 255;
     }
