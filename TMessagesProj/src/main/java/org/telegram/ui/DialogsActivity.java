@@ -3247,7 +3247,7 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
         if (initialDialogsType == DIALOGS_TYPE_ADD_USERS_TO || isArchive() && getDialogsArray(currentAccount, initialDialogsType, folderId, false).isEmpty()) {
             searchItem.setVisibility(View.GONE);
         }
-        searchItem.setVisibility(View.GONE);
+        searchItem.setVisibility(BuildVars.WAYGRAM_SIMPLIFIED_UI && initialDialogsType == DIALOGS_TYPE_DEFAULT ? View.VISIBLE : View.GONE);
 
         if (!onlySelect && searchString == null && folderId == 0 && communityId == 0) {
             doneItem = new ActionBarMenuItem(context, null, getThemedColor(Theme.key_actionBarDefaultSelector), getThemedColor(Theme.key_actionBarDefaultIcon), true);
@@ -3527,7 +3527,7 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
                 }
             }
             if (folderId == 0) {
-                actionBar.setSupportsHolidayImage(true);
+                actionBar.setSupportsHolidayImage(!BuildVars.WAYGRAM_SIMPLIFIED_UI);
             }
         }
         //if (!onlySelect || initialDialogsType == DIALOGS_TYPE_FORWARD) {
@@ -14012,6 +14012,10 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
     }
 
     private float getFilterTabsVisibilityFactor(boolean includeSearch) {
+        if (BuildVars.WAYGRAM_SIMPLIFIED_UI && initialDialogsType == DIALOGS_TYPE_DEFAULT && folderId == 0 && communityId == 0) {
+            // WayGram keeps the primary chat screen intentionally simple: one conversation list.
+            return 0f;
+        }
         final float factor1 = includeSearch ? (1f - animatorSearchVisible.getFloatValue()) : 1f;
         final float factor2 = 1f - getRightSlidingProgress();
         final float factor3 = animatorFilterTabsVisible.getFloatValue();
@@ -14058,7 +14062,11 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
         final float factor1 = (1f - actionModeVisible) * (1f - animatorDoneButtonVisible.getFloatValue());
         final float factor2 = Math.max(searchFieldVisible, alphaByScrollOffset * (1f - getRightSlidingProgress()));
 
-        final float alpha = factor0 * factor1 * factor2;
+        float alpha = factor0 * factor1 * factor2;
+        if (BuildVars.WAYGRAM_SIMPLIFIED_UI && initialDialogsType == DIALOGS_TYPE_DEFAULT && folderId == 0 && communityId == 0 && !searching) {
+            // Keep a modern, discoverable search field on WayGram's chat screen.
+            alpha = factor0 * factor1 * (1f - getRightSlidingProgress());
+        }
 
         fragmentSearchField.setAlpha(alpha);
         fragmentSearchField.setVisibility(alpha > 0 ? View.VISIBLE : View.GONE);
