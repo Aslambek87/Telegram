@@ -3244,10 +3244,11 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
             animatorSet.start();
             */
         });
-        if (initialDialogsType == DIALOGS_TYPE_ADD_USERS_TO || isArchive() && getDialogsArray(currentAccount, initialDialogsType, folderId, false).isEmpty()) {
+        if (BuildVars.WAYGRAM_SIMPLIFIED_UI && initialDialogsType == DIALOGS_TYPE_DEFAULT) {
+            searchItem.setVisibility(View.VISIBLE);
+        } else if (initialDialogsType == DIALOGS_TYPE_ADD_USERS_TO || isArchive() && getDialogsArray(currentAccount, initialDialogsType, folderId, false).isEmpty()) {
             searchItem.setVisibility(View.GONE);
         }
-        searchItem.setVisibility(BuildVars.WAYGRAM_SIMPLIFIED_UI && initialDialogsType == DIALOGS_TYPE_DEFAULT ? View.VISIBLE : View.GONE);
 
         if (!onlySelect && searchString == null && folderId == 0 && communityId == 0) {
             doneItem = new ActionBarMenuItem(context, null, getThemedColor(Theme.key_actionBarDefaultSelector), getThemedColor(Theme.key_actionBarDefaultIcon), true);
