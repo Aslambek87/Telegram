@@ -61,6 +61,7 @@ import androidx.core.math.MathUtils;
 
 import org.telegram.messenger.AndroidUtilities;
 import org.telegram.messenger.ApplicationLoader;
+import org.telegram.messenger.BuildVars;
 import org.telegram.messenger.ChatObject;
 import org.telegram.messenger.ChatThemeController;
 import org.telegram.messenger.CodeHighlighting;
@@ -693,6 +694,15 @@ public class DialogCell extends BaseCell implements StoriesListPlaceProvider.Ava
         drawMonoforumAvatar = false;
         drawCommunityAvatar = false;
         avatarImage.setRoundRadius(dp(26));
+        if (BuildVars.WAYGRAM_SIMPLIFIED_UI) {
+            // A calmer, roomier conversation row inspired by familiar mobile messengers.
+            // Keep the existing Telegram cell logic and data binding intact.
+            avatarStart = 12;
+            messagePaddingStart = 80;
+            heightDefault = 76;
+            heightThreeLines = 82;
+            avatarImage.setRoundRadius(dp(28));
+        }
         for (int i = 0; i < thumbImage.length; ++i) {
             thumbImage[i] = new ImageReceiver(this);
             thumbImage[i].ignoreNotifications = true;
@@ -2446,13 +2456,13 @@ public class DialogCell extends BaseCell implements StoriesListPlaceProvider.Ava
                 thumbImage[i].setImageCoords(thumbLeft + (thumbSize + 2) * i, avatarTop + dp(31) + (twoLinesForName ? dp(20) : 0) - (!(useForceThreeLines || SharedConfig.useThreeLinesLayout) && tags != null && !tags.isEmpty() ? dp(9) : 0), dp(18), dp(18));
             }
         } else {
-            avatarTop = dp(9);
-            messageNameTop = dp(31);
-            timeTop = dp(16);
-            errorTop = dp(38);
-            pinTop = dp(39);
-            countTop = isTopic ? dp(35f) : dp(38f);
-            checkDrawTop = dp(17);
+            avatarTop = dp(BuildVars.WAYGRAM_SIMPLIFIED_UI ? 10 : 9);
+            messageNameTop = dp(BuildVars.WAYGRAM_SIMPLIFIED_UI ? 35 : 31);
+            timeTop = dp(BuildVars.WAYGRAM_SIMPLIFIED_UI ? 14 : 16);
+            errorTop = dp(BuildVars.WAYGRAM_SIMPLIFIED_UI ? 42 : 38);
+            pinTop = dp(BuildVars.WAYGRAM_SIMPLIFIED_UI ? 43 : 39);
+            countTop = BuildVars.WAYGRAM_SIMPLIFIED_UI ? dp(42f) : (isTopic ? dp(35f) : dp(38f));
+            checkDrawTop = dp(BuildVars.WAYGRAM_SIMPLIFIED_UI ? 15 : 17);
             messageWidth = getMeasuredWidth() - dp(messagePaddingStart + 20 - (LocaleController.isRTL ? 0 : 12));
 
             if (LocaleController.isRTL) {
@@ -2464,7 +2474,8 @@ public class DialogCell extends BaseCell implements StoriesListPlaceProvider.Ava
                 avatarLeft = dp(avatarStart);
                 thumbLeft = avatarLeft + dp(56 + 11);
             }
-            storyParams.originalAvatarRect.set(avatarLeft, avatarTop, avatarLeft + dp(52), avatarTop + dp(52));
+            final int avatarSize = BuildVars.WAYGRAM_SIMPLIFIED_UI ? 56 : 52;
+            storyParams.originalAvatarRect.set(avatarLeft, avatarTop, avatarLeft + dp(avatarSize), avatarTop + dp(avatarSize));
             for (int i = 0; i < thumbImage.length; ++i) {
                 thumbImage[i].setImageCoords(thumbLeft + (thumbSize + 2) * i, avatarTop + dp(30) + (twoLinesForName ? dp(20) : 0) - (!(useForceThreeLines || SharedConfig.useThreeLinesLayout) && tags != null && !tags.isEmpty() ? dp(9) : 0), dp(thumbSize), dp(thumbSize));
             }
@@ -4075,7 +4086,7 @@ public class DialogCell extends BaseCell implements StoriesListPlaceProvider.Ava
                 Theme.dialogs_lockDrawable.draw(canvas);
             }
 
-            int nameTop = dp(useForceThreeLines || SharedConfig.useThreeLinesLayout ? 10 : 14);
+            int nameTop = dp(useForceThreeLines || SharedConfig.useThreeLinesLayout ? 10 : (BuildVars.WAYGRAM_SIMPLIFIED_UI ? 16 : 14));
             if ((!(useForceThreeLines || SharedConfig.useThreeLinesLayout) || isForumCell()) && hasTags()) {
                 nameTop -= dp(isForumCell() ? 8 : 9);
             }
