@@ -93,7 +93,7 @@ public class MainTabsActivity extends ViewPagerActivity implements NotificationC
     public static final int TABS_COUNT = 4;
     private static final int POSITION_CHATS = 0;
     private static final int POSITION_CALLS_OR_CONTACTS = 1;
-    private static final int POSITION_CALLS_OR_CONTACTS_OR_CALLS = 2;
+    private static final int POSITION_CONTACTS_OR_CALLS = 2;
     private static final int POSITION_SETTINGS = 3;
 
     private static final int INDEX_CHATS = 0;
@@ -107,7 +107,7 @@ public class MainTabsActivity extends ViewPagerActivity implements NotificationC
             switch (index) {
                 case INDEX_CHATS: return POSITION_CHATS;
                 case INDEX_CALLS: return POSITION_CALLS_OR_CONTACTS;
-                case INDEX_CONTACTS: return POSITION_CALLS_OR_CONTACTS_OR_CALLS;
+                case INDEX_CONTACTS: return POSITION_CONTACTS_OR_CALLS;
                 case INDEX_SETTINGS: return POSITION_SETTINGS;
                 default: return POSITION_SETTINGS;
             }
@@ -751,8 +751,8 @@ public class MainTabsActivity extends ViewPagerActivity implements NotificationC
 
         if (viewPager != null) {
             final int currentPosition = viewPager.getCurrentPosition();
-            if (currentPosition != POSITION_CALLS_OR_CONTACTS_OR_CALLS && dropCallsFragmentAfterPageScroll) {
-                dropFragmentAtPosition(POSITION_CALLS_OR_CONTACTS_OR_CALLS);
+            if (currentPosition != POSITION_CONTACTS_OR_CALLS && dropCallsFragmentAfterPageScroll) {
+                dropFragmentAtPosition(POSITION_CONTACTS_OR_CALLS);
                 dropCallsFragmentAfterPageScroll = false;
             }
             if (currentPosition != POSITION_SETTINGS) {
@@ -837,7 +837,7 @@ public class MainTabsActivity extends ViewPagerActivity implements NotificationC
                 args.putBoolean("needFinishFragment", false);
                 args.putBoolean("hasMainTabs", true);
                 return new CallLogActivity(args);
-            } else if (position == POSITION_CALLS_OR_CONTACTS_OR_CALLS) {
+            } else if (position == POSITION_CONTACTS_OR_CALLS) {
                 Bundle args = new Bundle();
                 args.putBoolean("needPhonebook", true);
                 args.putBoolean("needFinishFragment", false);
@@ -857,7 +857,7 @@ public class MainTabsActivity extends ViewPagerActivity implements NotificationC
             args.putBoolean("needFinishFragment", false);
             args.putBoolean("hasMainTabs", true);
             return new ContactsActivity(args);
-        } else if (position == POSITION_CALLS_OR_CONTACTS_OR_CALLS) {
+        } else if (position == POSITION_CONTACTS_OR_CALLS) {
             if (getUserConfig().showCallsTab) {
                 Bundle args = new Bundle();
                 args.putBoolean("needFinishFragment", false);
@@ -1037,12 +1037,12 @@ public class MainTabsActivity extends ViewPagerActivity implements NotificationC
         } else if (id == NotificationCenter.callTabsVisibleToggled) {
             final boolean callTabsVisible = getUserConfig().showCallsTab;
             checkUi_callTabVisible(callTabsVisible, true);
-            if (viewPager != null && viewPager.getCurrentPosition() == POSITION_CALLS_OR_CONTACTS_OR_CALLS) {
+            if (viewPager != null && viewPager.getCurrentPosition() == POSITION_CONTACTS_OR_CALLS) {
                 viewPager.scrollToPosition(POSITION_CHATS);
                 selectTab(POSITION_CHATS, true);
                 dropCallsFragmentAfterPageScroll = true;
             } else {
-                dropFragmentAtPosition(POSITION_CALLS_OR_CONTACTS_OR_CALLS);
+                dropFragmentAtPosition(POSITION_CONTACTS_OR_CALLS);
             }
         } else if (id == NotificationCenter.mainUserInfoChanged) {
             if (tabs != null && tabs[INDEX_PROFILE] != null) {
