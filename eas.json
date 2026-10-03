@@ -1,0 +1,15 @@
+{
+  "cli": {
+    "version": ">= 16.0.0",
+    "requireCommit": false
+  },
+  "build": {
+    "waygram": {
+      "distribution": "internal",
+      "android": {
+        "config": "waygram-android.yml",
+        "withoutCredentials": true
+      }
+    }
+  }
+}
