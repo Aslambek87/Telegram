@@ -7,6 +7,9 @@
       "eas": {
         "projectId": "7898d599-d142-4494-a7f0-c18547210ab2"
       }
+    },
+    "android": {
+      "package": "com.aslambek.waygram.web"
     }
   }
 }
