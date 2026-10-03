@@ -142,8 +142,7 @@ android {
         }
         afat {
             ndk {
-                // WayGram control builds target the user's 64-bit Samsung device only.
-                abiFilters "arm64-v8a"
+                abiFilters "armeabi-v7a", "arm64-v8a", "x86", "x86_64"
             }
             sourceSets.debug {
                 manifest.srcFile '../TMessagesProj/config/debug/AndroidManifest_SDK23.xml'
