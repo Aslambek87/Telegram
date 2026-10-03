@@ -460,6 +460,16 @@ public class MainTabsActivity extends ViewPagerActivity implements NotificationC
         if (getContext() == null || getParentActivity() == null) return false;
         final ItemOptions o = ItemOptions.makeOptions(this, anchor);
         o.add(R.drawable.menu_call_create, getString(R.string.GroupCallCreate2), () -> CallLogActivity.openCreateCall(this));
+        if (BuildVars.WAYGRAM_SIMPLIFIED_UI) {
+            // Calls are a permanent WayGram destination, so do not offer hide/show controls.
+            o.setBlur(true);
+            o.translate(0, -dp(4));
+            final ShapeDrawable bg = Theme.createRoundRectDrawable(dp(28), getThemedColor(Theme.key_windowBackgroundWhite));
+            bg.getPaint().setShadowLayer(dp(6), 0, dp(1), Theme.multAlpha(0xFF000000, 0.15f));
+            o.setScrimViewBackground(bg);
+            o.show();
+            return true;
+        }
         if (getUserConfig().showCallsTab) {
             o.add(R.drawable.msg_archive_hide, getString(R.string.HideCallTab), () -> {
                 getUserConfig().setShowCallsTab(false);
@@ -1041,14 +1051,16 @@ public class MainTabsActivity extends ViewPagerActivity implements NotificationC
         } else if (id == NotificationCenter.needSetDayNightTheme) {
             clearAllHiddenFragments();
         } else if (id == NotificationCenter.callTabsVisibleToggled) {
-            final boolean callTabsVisible = getUserConfig().showCallsTab;
-            checkUi_callTabVisible(callTabsVisible, true);
-            if (viewPager != null && viewPager.getCurrentPosition() == POSITION_CONTACTS_OR_CALLS) {
-                viewPager.scrollToPosition(POSITION_CHATS);
-                selectTab(POSITION_CHATS, true);
-                dropCallsFragmentAfterPageScroll = true;
-            } else {
-                dropFragmentAtPosition(POSITION_CONTACTS_OR_CALLS);
+            if (!BuildVars.WAYGRAM_SIMPLIFIED_UI) {
+                final boolean callTabsVisible = getUserConfig().showCallsTab;
+                checkUi_callTabVisible(callTabsVisible, true);
+                if (viewPager != null && viewPager.getCurrentPosition() == POSITION_CONTACTS_OR_CALLS) {
+                    viewPager.scrollToPosition(POSITION_CHATS);
+                    selectTab(POSITION_CHATS, true);
+                    dropCallsFragmentAfterPageScroll = true;
+                } else {
+                    dropFragmentAtPosition(POSITION_CONTACTS_OR_CALLS);
+                }
             }
         } else if (id == NotificationCenter.mainUserInfoChanged) {
             if (tabs != null && tabs[INDEX_PROFILE] != null) {
