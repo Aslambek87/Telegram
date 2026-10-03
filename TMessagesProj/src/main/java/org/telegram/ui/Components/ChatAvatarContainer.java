@@ -39,6 +39,7 @@ import androidx.core.content.ContextCompat;
 
 import org.telegram.messenger.AndroidUtilities;
 import org.telegram.messenger.ApplicationLoader;
+import org.telegram.messenger.BuildVars;
 import org.telegram.messenger.ChatObject;
 import org.telegram.messenger.DialogObject;
 import org.telegram.messenger.Emoji;
@@ -78,7 +79,7 @@ public class ChatAvatarContainer extends FrameLayout implements FactorAnimator.T
 
     public boolean allowDrawStories;
     private Integer storiesForceState;
-    private int avatarSizeInDp = 42;
+    private int avatarSizeInDp = BuildVars.WAYGRAM_SIMPLIFIED_UI ? 40 : 42;
     public BackupImageView avatarImageView;
     private boolean avatarImageIsHidden;
     private SimpleTextView titleTextView;
@@ -262,7 +263,7 @@ public class ChatAvatarContainer extends FrameLayout implements FactorAnimator.T
             }
         }
         avatarImageView.setContentDescription(getString(R.string.AccDescrProfilePicture));
-        avatarImageView.setRoundRadius(dp(21));
+        avatarImageView.setRoundRadius(dp(BuildVars.WAYGRAM_SIMPLIFIED_UI ? 20 : 21));
         addView(avatarImageView);
         if (avatarClickable) {
             final TLRPC.Chat chat = parentFragment != null ? parentFragment.getCurrentChat() : null;
@@ -279,7 +280,7 @@ public class ChatAvatarContainer extends FrameLayout implements FactorAnimator.T
         titleTextView = new SimpleTextConnectedView(context, titleTextLargerCopyView);
         titleTextView.setEllipsizeByGradient(true);
         titleTextView.setTextColor(getThemedColor(Theme.key_actionBarDefaultTitle));
-        titleTextView.setTextSize(18);
+        titleTextView.setTextSize(BuildVars.WAYGRAM_SIMPLIFIED_UI ? 17 : 18);
         titleTextView.setGravity(Gravity.LEFT);
         titleTextView.setTypeface(AndroidUtilities.bold());
         titleTextView.setLeftDrawableTopPadding(-dp(1.3f));
