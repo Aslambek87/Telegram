@@ -1,0 +1,20 @@
+name: Check WayGram EAS Status
+
+on:
+  workflow_dispatch:
+
+jobs:
+  eas-status:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - name: Checkout WayGram
+        uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Check latest EAS Android builds
+        env:
+          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+        run: npx --yes eas-cli@latest build:list --platform android --limit 3 --json --non-interactive
