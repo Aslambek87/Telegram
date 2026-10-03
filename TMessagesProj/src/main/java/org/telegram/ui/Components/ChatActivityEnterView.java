@@ -2704,7 +2704,10 @@ public class ChatActivityEnterView extends FrameLayout implements
             }
         };
         frameLayout.setClipChildren(false);
-        textFieldContainer.addView(frameLayout, LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, LayoutHelper.WRAP_CONTENT, Gravity.BOTTOM, 0, 0, DEFAULT_HEIGHT, 0));
+        if (BuildVars.WAYGRAM_SIMPLIFIED_UI) {
+            frameLayout.setBackground(Theme.createRoundRectDrawable(dp(22), getThemedColor(Theme.key_chat_messagePanelBackground)));
+        }
+        textFieldContainer.addView(frameLayout, LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, LayoutHelper.WRAP_CONTENT, Gravity.BOTTOM, BuildVars.WAYGRAM_SIMPLIFIED_UI ? 4 : 0, 0, BuildVars.WAYGRAM_SIMPLIFIED_UI ? DEFAULT_HEIGHT + 4 : DEFAULT_HEIGHT, 0));
 
         emojiButton = new ChatActivityEnterViewAnimatedIconView(context) {
             @Override
@@ -3451,6 +3454,9 @@ public class ChatActivityEnterView extends FrameLayout implements
             }
         };
         audioVideoSendButton.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO);
+        if (BuildVars.WAYGRAM_SIMPLIFIED_UI) {
+            audioVideoSendButton.setBackground(Theme.createSelectorDrawable(getThemedColor(Theme.key_listSelector), Theme.RIPPLE_MASK_CIRCLE_20DP, dp(18)));
+        }
 //        audioVideoSendButton.setFocusable(true);
 //        audioVideoSendButton.setAccessibilityDelegate(mediaMessageButtonsDelegate);
         padding = dp(10f);
@@ -3512,6 +3518,9 @@ public class ChatActivityEnterView extends FrameLayout implements
         };
         sendButton.setVisibility(INVISIBLE);
         sendButton.setContentDescription(getString(R.string.Send));
+        if (BuildVars.WAYGRAM_SIMPLIFIED_UI) {
+            sendButton.setBackground(Theme.createSelectorDrawable(getThemedColor(Theme.key_listSelector), Theme.RIPPLE_MASK_CIRCLE_20DP, dp(20)));
+        }
         sendButton.setSoundEffectsEnabled(false);
         sendButton.setScaleX(0.1f);
         sendButton.setScaleY(0.1f);
@@ -5815,9 +5824,9 @@ public class ChatActivityEnterView extends FrameLayout implements
         updateFieldHint(false);
         messageEditText.setSingleLine(false);
         messageEditText.setMaxLines(6);
-        messageEditText.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 18);
+        messageEditText.setTextSize(TypedValue.COMPLEX_UNIT_DIP, BuildVars.WAYGRAM_SIMPLIFIED_UI ? 17 : 18);
         messageEditText.setGravity(Gravity.BOTTOM);
-        messageEditText.setPadding(0, dp(9), 0, dp(10));
+        messageEditText.setPadding(0, dp(BuildVars.WAYGRAM_SIMPLIFIED_UI ? 10 : 9), 0, dp(10));
         messageEditText.setBackgroundDrawable(null);
         messageEditText.setTextColor(getThemedColor(Theme.key_chat_messagePanelText));
         messageEditText.setLinkTextColor(getThemedColor(Theme.key_chat_messageLinkOut));
