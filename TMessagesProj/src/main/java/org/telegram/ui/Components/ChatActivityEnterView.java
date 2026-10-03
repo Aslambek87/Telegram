@@ -2655,7 +2655,12 @@ public class ChatActivityEnterView extends FrameLayout implements
         };
         textFieldContainer.setClipChildren(false);
         textFieldContainer.setClipToPadding(false);
-        textFieldContainer.setPadding(0, dp(1), 0, 0);
+        if (BuildVars.WAYGRAM_SIMPLIFIED_UI) {
+            // WayGram keeps the composer visually calm and comfortably inset from screen edges.
+            textFieldContainer.setPadding(dp(4), dp(2), dp(4), dp(2));
+        } else {
+            textFieldContainer.setPadding(0, dp(1), 0, 0);
+        }
         addView(textFieldContainer, LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, LayoutHelper.WRAP_CONTENT, Gravity.LEFT | Gravity.BOTTOM, 0, 1, 0, 0));
 
         FrameLayout frameLayout = messageEditTextContainer = new FrameLayout(context) {
@@ -2836,7 +2841,7 @@ public class ChatActivityEnterView extends FrameLayout implements
             attachButton.setScaleType(ImageView.ScaleType.CENTER);
             attachButton.setColorFilter(new PorterDuffColorFilter(getThemedColor(Theme.key_glass_defaultIcon), PorterDuff.Mode.MULTIPLY));
             attachButton.setImageResource(R.drawable.msg_input_attach2);
-            attachButton.setBackground(Theme.createSelectorDrawable(getThemedColor(Theme.key_listSelector)));
+            attachButton.setBackground(Theme.createSelectorDrawable(getThemedColor(Theme.key_listSelector), Theme.RIPPLE_MASK_CIRCLE_20DP, dp(18)));
             messageEditTextContainer.addView(attachButton, LayoutHelper.createFrame(DEFAULT_HEIGHT, DEFAULT_HEIGHT, Gravity.BOTTOM | Gravity.RIGHT));
             attachButton.setOnClickListener(v -> {
                 if (adjustPanLayoutHelper != null && adjustPanLayoutHelper.animationInProgress() || attachLayoutPaddingAlpha == 0f) {
