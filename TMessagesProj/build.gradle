@@ -158,6 +158,7 @@ android {
 
     buildTypes {
         debug {
+            buildConfigField "boolean", "WAYGRAM_SIMPLIFIED_UI", "false"
             jniDebuggable true
             shrinkResources false
             multiDexEnabled true
@@ -171,6 +172,7 @@ android {
         }
 
         HA_private {
+            buildConfigField "boolean", "WAYGRAM_SIMPLIFIED_UI", "false"
             matchingFallbacks = ['release']
             jniDebuggable false
             multiDexEnabled true
@@ -184,6 +186,7 @@ android {
         }
 
         HA_public {
+            buildConfigField "boolean", "WAYGRAM_SIMPLIFIED_UI", "false"
             matchingFallbacks = ['release']
             jniDebuggable false
             multiDexEnabled true
@@ -197,6 +200,7 @@ android {
         }
 
         HA_hardcore {
+            buildConfigField "boolean", "WAYGRAM_SIMPLIFIED_UI", "false"
             matchingFallbacks = ['release']
             jniDebuggable false
             multiDexEnabled true
@@ -210,6 +214,7 @@ android {
         }
 
         standalone {
+            buildConfigField "boolean", "WAYGRAM_SIMPLIFIED_UI", "true"
             matchingFallbacks = ['release']
             jniDebuggable false
             multiDexEnabled true
@@ -223,6 +228,7 @@ android {
         }
 
         release {
+            buildConfigField "boolean", "WAYGRAM_SIMPLIFIED_UI", "false"
             jniDebuggable false
             shrinkResources false
             multiDexEnabled true
