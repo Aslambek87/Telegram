@@ -1,0 +1,7 @@
+{
+  "name": "waygram",
+  "version": "1.0.0",
+  "private": true,
+  "description": "WayGram Android client build metadata",
+  "scripts": {}
+}
