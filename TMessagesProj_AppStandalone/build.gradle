@@ -158,4 +158,4 @@ android {
     }
 }
 
-apply plugin: 'com.google.gms.google-services'
+// Google Services is intentionally disabled until WayGram has its own Firebase/FCM project.
