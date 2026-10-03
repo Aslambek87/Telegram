@@ -1,0 +1,30 @@
+build:
+  name: Build WayGram Android APK
+  steps:
+    - eas/checkout
+
+    - run:
+        name: Fetch Telegram submodules
+        command: git submodule update --init --recursive --depth=1
+
+    - run:
+        name: Install Telegram Android toolchain
+        command: |
+          yes | sdkmanager --licenses >/dev/null || true
+          sdkmanager "platform-tools" "platforms;android-36" "build-tools;36.0.0" "ndk;27.2.12479018" "cmake;3.22.1"
+          curl -fsSL https://services.gradle.org/distributions/gradle-8.13-bin.zip -o /tmp/gradle.zip
+          unzip -q /tmp/gradle.zip -d /tmp
+          echo "Gradle 8.13 and Telegram Android SDK/NDK installed"
+
+    - run:
+        name: Build WayGram standalone APK
+        command: |
+          export ANDROID_HOME="${ANDROID_HOME:-$ANDROID_SDK_ROOT}"
+          export ANDROID_NDK_HOME="$ANDROID_HOME/ndk/27.2.12479018"
+          /tmp/gradle-8.13/bin/gradle --no-daemon --stacktrace :TMessagesProj_AppStandalone:assembleAfatStandalone
+
+    - eas/upload_artifact:
+        name: Upload WayGram APK
+        inputs:
+          type: application-archive
+          path: TMessagesProj_AppStandalone/build/outputs/apk/**/*.apk
