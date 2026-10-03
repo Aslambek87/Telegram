@@ -1,0 +1,39 @@
+name: Build WayGram Android
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+
+    steps:
+      - name: Checkout WayGram source
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Build Telegram Android environment
+        run: docker build -t waygram-builder .
+
+      - name: Build APK
+        run: |
+          docker run --rm \
+            -v "$GITHUB_WORKSPACE:/home/source" \
+            waygram-builder
+
+      - name: Find generated APK files
+        if: always()
+        run: |
+          echo "Generated APK files:"
+          find . -type f -name "*.apk" -print || true
+
+      - name: Upload APK
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: WayGram-APK
+          path: |
+            TMessagesProj/build/outputs/apk/**/*.apk
+          if-no-files-found: error
