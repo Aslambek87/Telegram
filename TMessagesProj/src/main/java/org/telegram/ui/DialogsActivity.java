@@ -3514,7 +3514,7 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
                     // WayGram uses a clear text title instead of Telegram branding/status decoration.
                     statusDrawable = null;
                     logoDrawable = null;
-                    actionBar.setTitle(getString(R.string.AppName));
+                    actionBar.setTitle("WayGram");
                 } else {
                     statusDrawable = new AnimatedEmojiDrawable.SwapAnimatedEmojiDrawable(null, dp(26));
                     statusDrawable.center = true;
